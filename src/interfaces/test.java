@@ -103,11 +103,11 @@ public class test extends javax.swing.JFrame {
         ResultSet rs;
         boolean email_exits = false;
         
-        String sql = "SELECT * FROM users WHERE user_email = ?";
+        String sql = "SELECT user_email FROM `users` WHERE user_email = ?";
         
         try {
             st = conn.getConnection().prepareStatement(sql);
-            st.setString(5, email);
+            st.setString(1, email);
             rs = st.executeQuery();
             
             if (rs.next()) {
