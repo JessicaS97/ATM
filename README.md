@@ -18,6 +18,7 @@ Basic functionalities like filter search bar, displaying users from database and
 <img src="img/pic3.png" height="420" width="340">
 
 ## Built with:
-* Java
+* Java 
+* JDBC API
 * MySQL - Database Management
 * NetBeans IDE
