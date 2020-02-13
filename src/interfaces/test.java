@@ -4,6 +4,7 @@ import atm.simulator.system.classes.Connect;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -21,6 +22,7 @@ public class test extends javax.swing.JFrame {
     public test() {
         initComponents();
         this.setLocationRelativeTo(null);
+        groupButton();
         clean();
         block();
     }
@@ -38,6 +40,9 @@ public class test extends javax.swing.JFrame {
     void block() {
         t_name.setEnabled(false);
         t_lastname.setEnabled(false);
+        b_female.setEnabled(false);
+        b_male.setEnabled(false);
+        b_other.setEnabled(false);
         t_city.setEnabled(false);
         t_email.setEnabled(false);
         t_address.setEnabled(false);
@@ -51,6 +56,9 @@ public class test extends javax.swing.JFrame {
     void unblock() {
         t_name.setEnabled(true);
         t_lastname.setEnabled(true);
+        b_female.setEnabled(true);
+        b_male.setEnabled(true);
+        b_other.setEnabled(true);
         t_city.setEnabled(true);
         t_email.setEnabled(true);
         t_address.setEnabled(true);
@@ -59,6 +67,58 @@ public class test extends javax.swing.JFrame {
         jButton3.setEnabled(false);
         jButton4.setEnabled(true);
         jButton5.setEnabled(true);
+    }
+    
+    private void groupButton() {
+        ButtonGroup bg1 = new ButtonGroup();
+        
+        bg1.add(b_female);
+        bg1.add(b_male);
+        bg1.add(b_other);
+    }
+    
+    private boolean verifyFields() {
+        String name = t_name.getText();
+        String last_name = t_lastname.getText();
+        String address = t_address.getText();
+        String city = t_city.getText();
+        String phone = t_phone.getText();
+        String email = t_email.getText();
+        String password = String.valueOf(t_pin_code.getPassword());
+        
+        if (name.trim().equals("") || last_name.trim().equals("") ||
+                    password.trim().equals("") || email.trim().equals("") ||
+                    address.trim().equals("") || city.trim().equals("") ||
+                    phone.trim().equals("") ||
+                    (!b_female.isSelected() && !b_male.isSelected() && !b_other.isSelected())) {
+            JOptionPane.showMessageDialog(null, "Please Fill All Fields");
+            return false;
+        }
+        
+        return true;
+    } 
+    
+    private boolean checkEmail(String email) {
+        PreparedStatement st;
+        ResultSet rs;
+        boolean email_exits = false;
+        
+        String sql = "SELECT * FROM users WHERE user_email = ?";
+        
+        try {
+            st = conn.getConnection().prepareStatement(sql);
+            st.setString(5, email);
+            rs = st.executeQuery();
+            
+            if (rs.next()) {
+                email_exits = true;
+                JOptionPane.showMessageDialog(null, "Email has already been registered");
+            } 
+        } catch(SQLException e) {
+            Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, e);
+        }
+        
+        return email_exits;
     }
 
     /**
@@ -88,12 +148,12 @@ public class test extends javax.swing.JFrame {
         t_phone = new javax.swing.JTextField();
         t_address = new javax.swing.JTextField();
         t_city = new javax.swing.JTextField();
-        t_pin_code = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jRadioButton3 = new javax.swing.JRadioButton();
+        b_female = new javax.swing.JRadioButton();
+        b_male = new javax.swing.JRadioButton();
+        b_other = new javax.swing.JRadioButton();
+        t_pin_code = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -201,27 +261,22 @@ public class test extends javax.swing.JFrame {
             }
         });
 
-        t_pin_code.setText("jTextField4");
-        t_pin_code.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                t_pin_codeActionPerformed(evt);
-            }
-        });
-
         jLabel8.setText("Email");
 
         jLabel9.setText("City");
 
-        jRadioButton1.setText("Female");
-        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+        b_female.setText("Female");
+        b_female.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton1ActionPerformed(evt);
+                b_femaleActionPerformed(evt);
             }
         });
 
-        jRadioButton2.setText("Male");
+        b_male.setText("Male");
 
-        jRadioButton3.setText("Other");
+        b_other.setText("Other");
+
+        t_pin_code.setText("jPasswordField1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -242,7 +297,7 @@ public class test extends javax.swing.JFrame {
                             .addComponent(t_address, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(t_phone, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(t_city, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(t_pin_code, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(t_pin_code, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton3)
                         .addGap(46, 46, 46)
@@ -267,11 +322,11 @@ public class test extends javax.swing.JFrame {
                                 .addGap(54, 54, 54)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jRadioButton1)
+                                .addComponent(b_female)
                                 .addGap(18, 18, 18)
-                                .addComponent(jRadioButton2)
+                                .addComponent(b_male)
                                 .addGap(18, 18, 18)
-                                .addComponent(jRadioButton3))
+                                .addComponent(b_other))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(t_email, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
                                 .addComponent(t_lastname)
@@ -293,9 +348,9 @@ public class test extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2)
-                    .addComponent(jRadioButton3))
+                    .addComponent(b_female)
+                    .addComponent(b_male)
+                    .addComponent(b_other))
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(t_email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -314,8 +369,8 @@ public class test extends javax.swing.JFrame {
                     .addComponent(t_city, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(t_pin_code, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
+                    .addComponent(jLabel7)
+                    .addComponent(t_pin_code, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(84, 84, 84)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3)
@@ -356,27 +411,46 @@ public class test extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         conn = new Connect();
         Connection cn = conn.getConnection();
-        String name, lastname, city, phone;
-        String sql = "";
+        String name, lastname, email, phone, address, city, password;
+        String sql = "INSERT INTO users (user_name, user_lastname, user_gender, "
+                    + "user_email, user_phone, user_address, user_city, user_pin_code) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         name = t_name.getText();
         lastname = t_lastname.getText();
+        email = t_email.getText();
+        address = t_address.getText();
         city = t_city.getText();
-        phone = t_email.getText();
-        sql = "INSERT INTO users (user_name, user_lastname, user_city, user_phone) "
-                    + "VALUES (?, ?, ?, ?)";
-        try {
-            PreparedStatement pstmnt = cn.prepareCall(sql);
-            pstmnt.setString(1, name);
-            pstmnt.setString(2, lastname);
-            pstmnt.setString(3, city);
-            pstmnt.setString(4, phone);
-            int n = pstmnt.executeUpdate();
-            if (n > 0) {
-                JOptionPane.showMessageDialog(null, "Data Saved");
-                block();
+        phone = t_phone.getText();
+        password = String.valueOf(t_pin_code.getPassword());
+        
+        String gender = "Other";
+        if (b_female.isSelected()) {
+            gender = "F";
+        } else if (b_male.isSelected()) {
+            gender = "M";
+        } 
+        
+        if (verifyFields()) {
+            if (!checkEmail(email)) {
+                try {
+                    PreparedStatement pstmnt = cn.prepareCall(sql);
+                    pstmnt.setString(1, name);
+                    pstmnt.setString(2, lastname);
+                    pstmnt.setString(3, gender);
+                    pstmnt.setString(4, email);
+                    pstmnt.setString(5, phone);
+                    pstmnt.setString(6, address);
+                    pstmnt.setString(7, city);
+                    pstmnt.setString(8, password);
+                    int n = pstmnt.executeUpdate();
+                    if (n > 0) {
+                        JOptionPane.showMessageDialog(null, "Data Saved");
+                        block();
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -392,13 +466,9 @@ public class test extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_t_cityActionPerformed
 
-    private void t_pin_codeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_pin_codeActionPerformed
+    private void b_femaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_femaleActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_t_pin_codeActionPerformed
-
-    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton1ActionPerformed
+    }//GEN-LAST:event_b_femaleActionPerformed
 
     /**
      * @param args the command line arguments
@@ -436,6 +506,9 @@ public class test extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JRadioButton b_female;
+    private javax.swing.JRadioButton b_male;
+    private javax.swing.JRadioButton b_other;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
@@ -450,15 +523,12 @@ public class test extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JTextField t_address;
     private javax.swing.JTextField t_city;
     private javax.swing.JTextField t_email;
     private javax.swing.JTextField t_lastname;
     private javax.swing.JTextField t_name;
     private javax.swing.JTextField t_phone;
-    private javax.swing.JTextField t_pin_code;
+    private javax.swing.JPasswordField t_pin_code;
     // End of variables declaration//GEN-END:variables
 }
