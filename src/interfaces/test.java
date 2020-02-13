@@ -1,7 +1,10 @@
 package interfaces;
 
 import atm.simulator.system.classes.Connect;
-import java.sql.Connection;
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -39,10 +42,10 @@ public class test extends javax.swing.JFrame {
     }
     
     void unblock() {
-        t_name.setEnabled(false);
-        t_lastname.setEnabled(false);
-        t_city.setEnabled(false);
-        t_phone.setEnabled(false);
+        t_name.setEnabled(true);
+        t_lastname.setEnabled(true);
+        t_city.setEnabled(true);
+        t_phone.setEnabled(true);
         jButton3.setEnabled(false);
         jButton4.setEnabled(true);
         jButton5.setEnabled(true);
@@ -73,12 +76,32 @@ public class test extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         t_name.setText("jTextField1");
+        t_name.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                t_nameActionPerformed(evt);
+            }
+        });
 
         t_lastname.setText("jTextField2");
+        t_lastname.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                t_lastnameActionPerformed(evt);
+            }
+        });
 
         t_city.setText("jTextField3");
+        t_city.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                t_cityActionPerformed(evt);
+            }
+        });
 
         t_phone.setText("jTextField4");
+        t_phone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                t_phoneActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("NAME");
 
@@ -96,6 +119,11 @@ public class test extends javax.swing.JFrame {
         });
 
         jButton4.setText("SAVE");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setText("CANCEL");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -194,6 +222,49 @@ public class test extends javax.swing.JFrame {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         this.dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void t_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_nameActionPerformed
+        t_name.transferFocus();
+    }//GEN-LAST:event_t_nameActionPerformed
+
+    private void t_lastnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_lastnameActionPerformed
+        t_lastname.transferFocus();
+    }//GEN-LAST:event_t_lastnameActionPerformed
+
+    private void t_cityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_cityActionPerformed
+        t_city.transferFocus();
+    }//GEN-LAST:event_t_cityActionPerformed
+
+    private void t_phoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_phoneActionPerformed
+        t_phone.transferFocus();
+    }//GEN-LAST:event_t_phoneActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        Connect cc = new Connect();
+        Connection cn = cc.getConnection();
+        String name, lastname, city, phone;
+        String sql = "";
+        name = t_name.getText();
+        lastname = t_lastname.getText();
+        city = t_city.getText();
+        phone = t_phone.getText();
+        sql = "INSERT INTO users (user_name, user_lastname, user_city, user_phone) "
+                    + "VALUES (?, ?, ?, ?)";
+        try {
+            PreparedStatement pstmnt = cn.prepareCall(sql);
+            pstmnt.setString(1, name);
+            pstmnt.setString(2, lastname);
+            pstmnt.setString(3, city);
+            pstmnt.setString(4, phone);
+            int n = pstmnt.executeUpdate();
+            if (n > 0) {
+                JOptionPane.showMessageDialog(null, "Data Saved");
+                block();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
