@@ -13,7 +13,7 @@ Site Is Built From Scratch.
 1) Java Practice: this is my very first React website so there are many aspects which I had to Google up and do research about to understand and overcome any small challenges when building this platform. So I had to self-teach myself a new JavaScript framework in order to prove myself that I could learn and put an initial idea together even without prior experience.
 2) MySQL Pratice:
 
-### Day 1: MySQL DataBase setup and conection with Java in NetBeans
+### Day 1: MySQL DataBase setup and conection with NetBeans in Java
 Basic functionalities like filter search bar, displaying users from database and adding new users
 <img src="img/pic1.png" height="420" width="340">
 <img src="img/pic2.png" height="420" width="340">
