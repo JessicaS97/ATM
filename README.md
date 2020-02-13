@@ -8,7 +8,7 @@ This project simulates the common transactions and functionalities of an ATM. A 
 **Project Start Date:** 13/02/2020
 
 **What This Project Is For Me**
-1) Java Practice: this is my very first React website so there are many aspects which I had to Google up and do research about to understand and overcome any small challenges when building this platform. So I had to self-teach myself a new JavaScript framework in order to prove myself that I could learn and put an initial idea together even without prior experience.
+1) Java Practice: 
 2) MySQL Pratice:
 
 ### Day 1: MySQL DataBase setup and conection with NetBeans in Java (testing)
