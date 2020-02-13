@@ -12,14 +12,14 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author jessi
  */
-public class test extends javax.swing.JFrame {
+public class Register extends javax.swing.JFrame {
 
     Connect conn;
     
     /**
      * Creates new form test
      */
-    public test() {
+    public Register() {
         initComponents();
         this.setLocationRelativeTo(null);
         groupButton();
@@ -115,7 +115,7 @@ public class test extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Email has already been registered");
             } 
         } catch(SQLException e) {
-            Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, e);
         }
         
         return email_exits;
@@ -439,7 +439,7 @@ public class test extends javax.swing.JFrame {
                         block();
                     }
                 } catch (SQLException ex) {
-                    Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
@@ -478,20 +478,21 @@ public class test extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(test.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Register.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(test.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Register.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(test.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Register.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(test.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Register.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new test().setVisible(true);
+                new Register().setVisible(true);
             }
         });
     }
