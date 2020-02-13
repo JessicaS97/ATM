@@ -1,7 +1,5 @@
 # ATM
-Addiction is a platform to help users break bad habits by providing assessment of their habits and ongoing support along their journey.
-
-Site Is Built From Scratch.
+This project simulates the common transactions and functionalities of an ATM. A user and log in using its details, it can withdraw money from the ATM, check its balance and deposit money.
 
 ***
 
@@ -13,7 +11,7 @@ Site Is Built From Scratch.
 1) Java Practice: this is my very first React website so there are many aspects which I had to Google up and do research about to understand and overcome any small challenges when building this platform. So I had to self-teach myself a new JavaScript framework in order to prove myself that I could learn and put an initial idea together even without prior experience.
 2) MySQL Pratice:
 
-### Day 1: DataBase setup and conection with Java
+### Day 1: MySQL DataBase setup and conection with NetBeans in Java
 Basic functionalities like filter search bar, displaying users from database and adding new users
 <img src="img/pic1.png" height="420" width="340">
 <img src="img/pic2.png" height="420" width="340">
