@@ -13,7 +13,6 @@ import javax.swing.table.DefaultTableModel;
  */
 public class test extends javax.swing.JFrame {
 
-    DefaultTableModel model;
     Connect conn;
     
     /**
@@ -24,49 +23,25 @@ public class test extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         clean();
         block();
-        load("");
-    }
-    
-    void load(String value) {
-        String[] titles = {"ID", "Name", "Last Name", "City", "Phone"};
-        String[] registers = new String[5];
-        
-        String sql = "SELECT * FROM users where CONCAT(user_name, ' ',user_lastname) LIKE '%"+value+"%'";
-        
-        model = new DefaultTableModel(null, titles);
-        
-        conn = new Connect();
-        Connection cn = conn.getConnection();
-        
-        try {
-            Statement st = cn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-        
-            while (rs.next()) {
-                registers[0] = rs.getString("user_id");
-                registers[1] = rs.getString("user_name");
-                registers[2] = rs.getString("user_lastname");
-                registers[3] = rs.getString("user_city");
-                registers[4] = rs.getString("user_phone");
-                model.addRow(registers);
-            }
-        t_data.setModel(model);
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
     }
     
     void clean() {
         t_name.setText("");
         t_lastname.setText("");
+        t_address.setText("");
         t_city.setText("");
+        t_email.setText("");
         t_phone.setText("");
+        t_pin_code.setText("");
     }
     
     void block() {
         t_name.setEnabled(false);
         t_lastname.setEnabled(false);
         t_city.setEnabled(false);
+        t_email.setEnabled(false);
+        t_address.setEnabled(false);
+        t_pin_code.setEnabled(false);
         t_phone.setEnabled(false);
         jButton3.setEnabled(true);  // only enable NEW button
         jButton4.setEnabled(false);
@@ -77,6 +52,9 @@ public class test extends javax.swing.JFrame {
         t_name.setEnabled(true);
         t_lastname.setEnabled(true);
         t_city.setEnabled(true);
+        t_email.setEnabled(true);
+        t_address.setEnabled(true);
+        t_pin_code.setEnabled(true);
         t_phone.setEnabled(true);
         jButton3.setEnabled(false);
         jButton4.setEnabled(true);
@@ -94,8 +72,7 @@ public class test extends javax.swing.JFrame {
 
         t_name = new javax.swing.JTextField();
         t_lastname = new javax.swing.JTextField();
-        t_city = new javax.swing.JTextField();
-        t_phone = new javax.swing.JTextField();
+        t_email = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -104,10 +81,19 @@ public class test extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        t_data = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        search = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        t_phone = new javax.swing.JTextField();
+        t_address = new javax.swing.JTextField();
+        t_city = new javax.swing.JTextField();
+        t_pin_code = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
+        jRadioButton3 = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -125,27 +111,20 @@ public class test extends javax.swing.JFrame {
             }
         });
 
-        t_city.setText("jTextField3");
-        t_city.addActionListener(new java.awt.event.ActionListener() {
+        t_email.setText("jTextField4");
+        t_email.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                t_cityActionPerformed(evt);
+                t_emailActionPerformed(evt);
             }
         });
 
-        t_phone.setText("jTextField4");
-        t_phone.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                t_phoneActionPerformed(evt);
-            }
-        });
+        jLabel1.setText("Name");
 
-        jLabel1.setText("NAME");
+        jLabel2.setText("Last Name");
 
-        jLabel2.setText("LAST NAME");
+        jLabel3.setText("Gender");
 
-        jLabel3.setText("CITY");
-
-        jLabel4.setText("PHONE");
+        jLabel4.setText("Phone");
 
         jButton3.setText("NEW");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -175,69 +154,135 @@ public class test extends javax.swing.JFrame {
             }
         });
 
-        t_data.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+        jPanel1.setBackground(new java.awt.Color(0, 0, 51));
 
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(t_data);
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("REGISTER FORM");
 
-        jLabel5.setText("SEARCH");
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(241, 241, 241)
+                .addComponent(jLabel5)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel5)
+                .addContainerGap(38, Short.MAX_VALUE))
+        );
 
-        search.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                searchKeyReleased(evt);
+        jLabel6.setText("Address");
+
+        jLabel7.setText("Pin Code");
+
+        t_phone.setText("jTextField1");
+        t_phone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                t_phoneActionPerformed(evt);
             }
         });
+
+        t_address.setText("jTextField2");
+        t_address.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                t_addressActionPerformed(evt);
+            }
+        });
+
+        t_city.setText("jTextField3");
+        t_city.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                t_cityActionPerformed(evt);
+            }
+        });
+
+        t_pin_code.setText("jTextField4");
+        t_pin_code.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                t_pin_codeActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setText("Email");
+
+        jLabel9.setText("City");
+
+        jRadioButton1.setText("Female");
+        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton1ActionPerformed(evt);
+            }
+        });
+
+        jRadioButton2.setText("Male");
+
+        jRadioButton3.setText("Other");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(70, 70, 70)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(68, 68, 68))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel2))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(t_city, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
-                            .addComponent(t_phone)
-                            .addComponent(t_lastname)
-                            .addComponent(t_name)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(16, 16, 16)
-                                .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel3)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel9))
+                        .addGap(39, 39, 39)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(t_address, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(t_phone, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(t_city, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(t_pin_code, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton3)
                         .addGap(46, 46, 46)
                         .addComponent(jButton4)
-                        .addGap(54, 54, 54)
+                        .addGap(62, 62, 62)
                         .addComponent(jButton5)
-                        .addGap(57, 57, 57)
-                        .addComponent(jButton6)))
+                        .addGap(49, 49, 49)
+                        .addComponent(jButton6))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(jLabel1)
+                                    .addGap(68, 68, 68))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel2)
+                                        .addComponent(jLabel8))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(54, 54, 54)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jRadioButton1)
+                                .addGap(18, 18, 18)
+                                .addComponent(jRadioButton2)
+                                .addGap(18, 18, 18)
+                                .addComponent(jRadioButton3))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(t_email, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
+                                .addComponent(t_lastname)
+                                .addComponent(t_name)))))
                 .addContainerGap(74, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(96, 96, 96))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(53, 53, 53)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(48, 48, 48)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(t_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -245,27 +290,39 @@ public class test extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(t_lastname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(t_city, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
+                    .addComponent(jLabel3)
+                    .addComponent(jRadioButton1)
+                    .addComponent(jRadioButton2)
+                    .addComponent(jRadioButton3))
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(t_email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(t_phone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addGap(47, 47, 47)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(t_address, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addGap(21, 21, 21)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(t_city, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(t_pin_code, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addGap(84, 84, 84)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3)
                     .addComponent(jButton4)
                     .addComponent(jButton5)
                     .addComponent(jButton6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(91, 91, 91))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         pack();
@@ -292,13 +349,9 @@ public class test extends javax.swing.JFrame {
         t_lastname.transferFocus();
     }//GEN-LAST:event_t_lastnameActionPerformed
 
-    private void t_cityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_cityActionPerformed
-        t_city.transferFocus();
-    }//GEN-LAST:event_t_cityActionPerformed
-
-    private void t_phoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_phoneActionPerformed
-        t_phone.transferFocus();
-    }//GEN-LAST:event_t_phoneActionPerformed
+    private void t_emailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_emailActionPerformed
+        t_email.transferFocus();
+    }//GEN-LAST:event_t_emailActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         conn = new Connect();
@@ -308,7 +361,7 @@ public class test extends javax.swing.JFrame {
         name = t_name.getText();
         lastname = t_lastname.getText();
         city = t_city.getText();
-        phone = t_phone.getText();
+        phone = t_email.getText();
         sql = "INSERT INTO users (user_name, user_lastname, user_city, user_phone) "
                     + "VALUES (?, ?, ?, ?)";
         try {
@@ -321,16 +374,31 @@ public class test extends javax.swing.JFrame {
             if (n > 0) {
                 JOptionPane.showMessageDialog(null, "Data Saved");
                 block();
-                load("");
             }
         } catch (SQLException ex) {
             Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void searchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchKeyReleased
-        load(search.getText());
-    }//GEN-LAST:event_searchKeyReleased
+    private void t_phoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_phoneActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_t_phoneActionPerformed
+
+    private void t_addressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_addressActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_t_addressActionPerformed
+
+    private void t_cityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_cityActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_t_cityActionPerformed
+
+    private void t_pin_codeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_pin_codeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_t_pin_codeActionPerformed
+
+    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -377,12 +445,20 @@ public class test extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField search;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton2;
+    private javax.swing.JRadioButton jRadioButton3;
+    private javax.swing.JTextField t_address;
     private javax.swing.JTextField t_city;
-    private javax.swing.JTable t_data;
+    private javax.swing.JTextField t_email;
     private javax.swing.JTextField t_lastname;
     private javax.swing.JTextField t_name;
     private javax.swing.JTextField t_phone;
+    private javax.swing.JTextField t_pin_code;
     // End of variables declaration//GEN-END:variables
 }
