@@ -1,7 +1,5 @@
 # ATM
-Addiction is a platform to help users break bad habits by providing assessment of their habits and ongoing support along their journey.
-
-Site Is Built From Scratch.
+This project simulates the common transactions and functionalities of an ATM. A user and log in using its details, it can withdraw money from the ATM, check its balance and deposit money.
 
 ***
 
