@@ -21,8 +21,8 @@ Basic functionalities like filter search bar, displaying users from database and
 
 Work progress: checking all fields have been filled, verifying user has not been registered before, saving all details in DB
 
-<img src="img/pic4.png" height="380" width="340"><img src="img/pic5.png" height="380" width="340">
-<img src="img/pic6.png" height="380" width="340"><img src="img/pic7.png" height="380" width="340">
+<img src="img/pic4.png" height="380" width="360"><img src="img/pic5.png" height="380" width="360">
+<img src="img/pic6.png" height="380" width="360"><img src="img/pic7.png" height="380" width="360">
 
 ## Built with:
 * Java 
