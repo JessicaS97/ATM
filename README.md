@@ -15,9 +15,9 @@ Site Is Built From Scratch.
 
 ### Day 1: DataBase setup and conection with Java
 Basic functionalities like filter search bar, displaying users from database and adding new users
-<img src="img/pic1.png" height="420" width="300">
-<img src="img/pic2.png" height="420" width="300">
-<img src="img/pic3.png" height="420" width="300">
+<img src="img/pic1.png" height="420" width="340">
+<img src="img/pic2.png" height="420" width="340">
+<img src="img/pic3.png" height="420" width="340">
 
 ## Built with:
 * Java
