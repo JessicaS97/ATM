@@ -488,13 +488,16 @@ public class Register extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
+        
+        new Login().setVisible(true);
 
-        /* Create and display the form */
+        /* Create and display the form
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Register().setVisible(true);
+                new Register().setVisible(false);
             }
         });
+        */
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

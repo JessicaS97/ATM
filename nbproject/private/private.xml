@@ -3,10 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/jessi/Documents/NetBeansProjects/ATM%20Simulator%20System/src/interfaces/test.java</file>
             <file>file:/C:/Users/jessi/Documents/NetBeansProjects/ATM%20Simulator%20System/src/atm/simulator/system/classes/Users.java</file>
-            <file>file:/C:/Users/jessi/Documents/NetBeansProjects/ATM%20Simulator%20System/src/interfaces/register.java</file>
             <file>file:/C:/Users/jessi/Documents/NetBeansProjects/ATM%20Simulator%20System/src/interfaces/UserInformation.java</file>
+            <file>file:/C:/Users/jessi/Documents/NetBeansProjects/ATM%20Simulator%20System/src/interfaces/Register.java</file>
             <file>file:/C:/Users/jessi/Documents/NetBeansProjects/ATM%20Simulator%20System/src/interfaces/Login.java</file>
         </group>
     </open-files>
