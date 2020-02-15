@@ -31,6 +31,11 @@ Work progress: search up user in DB and validate credentials before logging into
 <img src="img/pic8.png" height="380" width="360">
 <img src="img/pic9.png" height="300" width="370"> <img src="img/pic10.png" height="300" width="370"> <img src="img/pic11.png" height="300" width="370">
 
+### Day 3: Menu for user to make transactions
+
+Work progress: basic transactions will allow users to view account balance, transfer money to other users, withdraw money, deposit money, and change pin code.
+Challenge: writing the correct query syntax to retrieve balance information with passed used id. Had to use relational JOIN query to connect users table to accounts table through the mappings table in DB 
+
 ## Built with:
 * Java 
 * JDBC API
