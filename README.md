@@ -26,7 +26,7 @@ Work progress: checking all fields have been filled, verifying user has not been
 
 ### Day 2: Login form and its link to Register form
 
-Work progress: search up user in DB and validate credentials before logging into the system
+Work progress: search up user in DB and validate credentials before logging into the system, randomly generate card number for user with auto increment to store in DB and ensure its uniqueness.
 
 ## Built with:
 * Java 
