@@ -5,7 +5,13 @@
  */
 package interfaces;
 
+import atm.simulator.system.classes.Connect;
 import java.awt.Color;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -19,6 +25,9 @@ import javax.swing.JTextField;
 public class Login extends javax.swing.JFrame {
     
     final JDialog dialog = new JDialog();
+    Connect conn = new Connect();
+    PreparedStatement st;
+    ResultSet rs;
     /**
      * Creates new form Login
      */
@@ -43,6 +52,33 @@ public class Login extends javax.swing.JFrame {
             return false;
         } 
         return true;
+    }
+    
+    private boolean validateUser(String card_number) {
+        
+        String sql = "SELECT user_card_number FROM `users` WHERE user_card_number = ?";
+        dialog.setAlwaysOnTop(true);    
+        try {
+            st = conn.getConnection().prepareStatement(sql);
+            st.setString(1, card_number);
+            rs = st.executeQuery();
+            
+            if (rs.next()) {
+                return true;
+            } 
+        } catch(SQLException e) {
+            Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, e);
+        }
+        JOptionPane.showMessageDialog(dialog, "User does not exist");
+        return false;
+    }
+    
+    private boolean validateCredentials(String input_card_number, String input_pin_code) {
+        boolean match = false;
+        if (user_card_number.equals(card_number)) {
+            match = true;
+        }
+        return match;
     }
     
 
@@ -167,11 +203,17 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String card_number = log_card_number.getText();
+        String pin_code = String.valueOf(log_pin_code.getPassword());
         // All field filled?
         if (validateFieldsFilled()) {
-            // User information in system?
-            String card_number = log_card_number.getText();
-            // Password match user?
+            // If user does not exist
+            if (!validateUser(card_number)) {
+                clean();
+            } else {
+                // Validate card number and pin code
+                validateCredentials(input_card_number, input_pin_code);
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

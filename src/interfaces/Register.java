@@ -128,7 +128,7 @@ public class Register extends javax.swing.JFrame {
     private boolean checkCardNumber(String card_number) {
         boolean card_exits = false;
         
-        String sql = "SELECT user_card_number FROM `users` WHERE user_card_number = ?";
+        String sql = "SELECT user_name FROM `users` WHERE user_name = ?";
         
         try {
             st = conn.getConnection().prepareStatement(sql);
