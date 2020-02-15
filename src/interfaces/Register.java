@@ -207,7 +207,7 @@ public class Register extends javax.swing.JFrame {
             }
         });
 
-        jButton6.setText("EXIT");
+        jButton6.setText("LOGIN");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
@@ -384,7 +384,8 @@ public class Register extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        this.dispose();
+        this.setVisible(false);
+        new Login().setVisible(true);
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void t_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_nameActionPerformed
@@ -489,7 +490,6 @@ public class Register extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         
-        new Login().setVisible(true);
 
         /* Create and display the form
         java.awt.EventQueue.invokeLater(new Runnable() {
