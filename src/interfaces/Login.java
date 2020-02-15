@@ -6,17 +6,13 @@
 package interfaces;
 
 import atm.simulator.system.classes.Connect;
-import java.awt.Color;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.BorderFactory;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 
 /**
  *
@@ -74,11 +70,24 @@ public class Login extends javax.swing.JFrame {
     }
     
     private boolean validateCredentials(String input_card_number, String input_pin_code) {
-        boolean match = false;
-        if (user_card_number.equals(card_number)) {
-            match = true;
+        String sql = "SELECT * from users";
+        
+        try {
+            st = conn.getConnection().prepareStatement(sql);
+            rs = st.executeQuery();
+            dialog.setAlwaysOnTop(true);    
+            while (rs.next()) {
+                if (rs.getString("user_pin_code").equals(input_pin_code) && 
+                            rs.getString("user_card_number").equals(input_card_number)) {
+                    JOptionPane.showMessageDialog(dialog, "Matched");
+                    return true;
+                }
+            } 
+        } catch(SQLException e) {
+            Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, e);
         }
-        return match;
+        JOptionPane.showMessageDialog(dialog, "Incorrect pin code");
+        return false;
     }
     
 
@@ -212,7 +221,7 @@ public class Login extends javax.swing.JFrame {
                 clean();
             } else {
                 // Validate card number and pin code
-                validateCredentials(input_card_number, input_pin_code);
+                validateCredentials(card_number, pin_code);
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
