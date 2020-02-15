@@ -24,6 +24,7 @@ public class Login extends javax.swing.JFrame {
     Connect conn = new Connect();
     PreparedStatement st;
     ResultSet rs;
+    String user_card_number;
     /**
      * Creates new form Login
      */
@@ -31,6 +32,10 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         clean();
+    }
+    
+    public String getCardNumber() {
+        return user_card_number;
     }
     
     private void clean() {
@@ -79,7 +84,6 @@ public class Login extends javax.swing.JFrame {
             while (rs.next()) {
                 if (rs.getString("user_pin_code").equals(input_pin_code) && 
                             rs.getString("user_card_number").equals(input_card_number)) {
-                    JOptionPane.showMessageDialog(dialog, "Matched");
                     return true;
                 }
             } 
@@ -221,7 +225,11 @@ public class Login extends javax.swing.JFrame {
                 clean();
             } else {
                 // Validate card number and pin code
-                validateCredentials(card_number, pin_code);
+                if (validateCredentials(card_number, pin_code)) {
+                    user_card_number = card_number;
+                    this.dispose();
+                    new Menu().setVisible(true);
+                }
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
