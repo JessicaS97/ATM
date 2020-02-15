@@ -28,8 +28,8 @@ Work progress: checking all fields have been filled, verifying user has not been
 
 Work progress: search up user in DB and validate credentials before logging into the system, randomly generate card number for user with auto increment to store in DB and ensure its uniqueness.
 
-<img src="img/pic8.png" height="380" width="360"><img src="img/pic9.png" height="380" width="360">
-<img src="img/pic10.png" height="380" width="360"><img src="img/pic11.png" height="380" width="360">
+<img src="img/pic8.png" height="380" width="360">
+<img src="img/pic9.png" height="360" width="380"><img src="img/pic10.png" height="380" width="360"><img src="img/pic11.png" height="360" width="380">
 
 ## Built with:
 * Java 
