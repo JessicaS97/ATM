@@ -439,17 +439,19 @@ public class Register extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         conn = new Connect();
         Connection cn = conn.getConnection();
-        String name, lastname, email, phone, address, city, password, card_number;
-        String sql = "INSERT INTO users (user_name, user_lastname, user_gender, "
+        String name, lastname, email, address, city, card_number;
+        int phone, password, user_id = 0, account_id = 0;
+        String user_sql = "INSERT INTO users (user_name, user_lastname, user_gender, "
                     + "user_email, user_phone, user_address, user_city, user_pin_code, user_card_number) "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String account_sql = "INSERT INTO accounts (balance) VALUES (?)";
         name = t_name.getText();
         lastname = t_lastname.getText();
         email = t_email.getText();
         address = t_address.getText();
         city = t_city.getText();
-        phone = t_phone.getText();
-        password = String.valueOf(t_pin_code.getPassword());
+        phone = Integer.parseInt(t_phone.getText());
+        password = Integer.parseInt(String.valueOf(t_pin_code.getPassword()));
         card_number = generateRandomCardNumber();
         
         String gender = "Other";
@@ -462,23 +464,44 @@ public class Register extends javax.swing.JFrame {
         if (verifyFields()) {
             if (!checkEmail(email)) {
                 try {
-                    PreparedStatement pstmnt = cn.prepareCall(sql);
-                    pstmnt.setString(1, name);
-                    pstmnt.setString(2, lastname);
-                    pstmnt.setString(3, gender);
-                    pstmnt.setString(4, email);
-                    pstmnt.setString(5, phone);
-                    pstmnt.setString(6, address);
-                    pstmnt.setString(7, city);
-                    pstmnt.setString(8, password);
-                    pstmnt.setString(9, card_number);
-                    dialog.setAlwaysOnTop(true); 
-                    JOptionPane.showMessageDialog(dialog, "Card Number: " + card_number);
-                    int n = pstmnt.executeUpdate();
-                    if (n > 0) {
+                    PreparedStatement user_st = cn.prepareStatement(user_sql, Statement.RETURN_GENERATED_KEYS);
+                    
+                    user_st.setString(1, name);
+                    user_st.setString(2, lastname);
+                    user_st.setString(3, gender);
+                    user_st.setString(4, email);
+                    user_st.setInt(5, phone);
+                    user_st.setString(6, address);
+                    user_st.setString(7, city);
+                    user_st.setInt(8, password);
+                    user_st.setString(9, card_number);
+                    user_st.executeUpdate();
+                    ResultSet addUser = user_st.getGeneratedKeys();
+                    
+                    if (addUser.next()) {
+                        user_id = addUser.getInt(1);
+                    }
+                    
+                    PreparedStatement account_st = cn.prepareStatement(account_sql, Statement.RETURN_GENERATED_KEYS);
+                    account_st.setInt(1, 0);
+                    account_st.executeUpdate();
+                    ResultSet addAccount = account_st.getGeneratedKeys();
+                    if (addAccount.next()) {
+                        account_id = addAccount.getInt(1);
+                    }
+                    
+                    if (user_id != 0 && account_id != 0) {
+                        String linkAccount_sql = "INSERT INTO mappings (user_id, account_id)"
+                                    + "VALUES (?, ?)";
+                        PreparedStatement link_st = cn.prepareStatement(linkAccount_sql);
+                        link_st.setInt(1, user_id);
+                        link_st.setInt(2, account_id);
+                        link_st.executeUpdate();
                         JOptionPane.showMessageDialog(dialog, "Data Saved");
+                        JOptionPane.showMessageDialog(dialog, "Card Number: " + card_number);
                         block();
                     }
+                    
                 } catch (SQLException ex) {
                     Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
                 }

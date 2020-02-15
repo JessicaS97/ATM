@@ -5,20 +5,55 @@
  */
 package interfaces;
 
+import atm.simulator.system.classes.Connect;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author jessi
  */
 public class Menu extends javax.swing.JFrame {
     
+    final JDialog dialog = new JDialog();
+    Connect conn = new Connect();
+    PreparedStatement st;
+    ResultSet rs;
     Login login = new Login();
+    
+    String name, last_name, pin_code, user_card_number;
     /**
      * Creates new form Menu
+     * @param user_card_number
      */
-    public Menu() {
+    public Menu(String user_card_number) {
         initComponents();
-        String card_number = login.getCardNumber();
-        
+        this.setLocationRelativeTo(null);
+        setDetails(user_card_number);
+    }
+    
+    private void setDetails(String user_card_number) {
+        String sql = "SELECT * FROM users WHERE user_card_number = ?";
+        try {
+            st = conn.getConnection().prepareStatement(sql);
+            st.setString(1, user_card_number);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                name = rs.getString("user_name");
+                last_name = rs.getString("user_lastname");
+                pin_code = rs.getString("user_pin_code");
+            }
+            
+            dialog.setAlwaysOnTop(true);    
+            JOptionPane.showMessageDialog(dialog, "Hi, " + name + " " + last_name);
+        } catch(SQLException e) {
+            Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
 
     /**
@@ -79,27 +114,27 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(55, 55, 55)
+                        .addGap(73, 73, 73)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(b_change_pin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(b_deposit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(b_transfer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(b_transfer, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(82, 82, 82)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(b_balance, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(b_exit, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(b_withdraw, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(b_withdraw, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(127, 127, 127)
+                        .addGap(150, 150, 150)
                         .addComponent(jLabel1)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(79, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(59, 59, 59)
+                .addGap(68, 68, 68)
                 .addComponent(jLabel1)
-                .addGap(79, 79, 79)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(b_transfer)
                     .addComponent(b_balance))
@@ -111,7 +146,7 @@ public class Menu extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(b_exit)
                     .addComponent(b_change_pin))
-                .addContainerGap(93, Short.MAX_VALUE))
+                .addGap(71, 71, 71))
         );
 
         pack();
@@ -126,7 +161,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_b_exitActionPerformed
 
     private void b_change_pinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_change_pinActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_b_change_pinActionPerformed
 
     /**
@@ -156,12 +191,12 @@ public class Menu extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the form 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Menu().setVisible(true);
             }
-        });
+        }); */
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

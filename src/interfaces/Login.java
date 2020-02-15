@@ -228,7 +228,7 @@ public class Login extends javax.swing.JFrame {
                 if (validateCredentials(card_number, pin_code)) {
                     user_card_number = card_number;
                     this.dispose();
-                    new Menu().setVisible(true);
+                    new Menu(user_card_number).setVisible(true);
                 }
             }
         }
