@@ -120,6 +120,11 @@ public class Menu extends javax.swing.JFrame {
         });
 
         b_withdraw.setText("WITHDRAW");
+        b_withdraw.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_withdrawActionPerformed(evt);
+            }
+        });
 
         b_exit.setText("EXIT");
         b_exit.addActionListener(new java.awt.event.ActionListener() {
@@ -195,6 +200,10 @@ public class Menu extends javax.swing.JFrame {
     private void b_balanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_balanceActionPerformed
         getBalance(card_number);
     }//GEN-LAST:event_b_balanceActionPerformed
+
+    private void b_withdrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_withdrawActionPerformed
+        new Withdraw(card_number).setVisible(true);
+    }//GEN-LAST:event_b_withdrawActionPerformed
 
     /**
      * @param args the command line arguments

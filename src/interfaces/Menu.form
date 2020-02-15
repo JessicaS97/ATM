@@ -111,6 +111,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="WITHDRAW"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="b_withdrawActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="b_exit">
       <Properties>
