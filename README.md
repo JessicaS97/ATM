@@ -24,6 +24,10 @@ Work progress: checking all fields have been filled, verifying user has not been
 <img src="img/pic4.png" height="380" width="360"><img src="img/pic5.png" height="380" width="360">
 <img src="img/pic6.png" height="380" width="360"><img src="img/pic7.png" height="380" width="360">
 
+### Day 2: Login form and its link to Register form
+
+Work progress: search up user in DB and validate credentials before logging into the system
+
 ## Built with:
 * Java 
 * JDBC API
