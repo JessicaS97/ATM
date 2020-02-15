@@ -2,9 +2,11 @@ package interfaces;
 
 import atm.simulator.system.classes.Connect;
 import java.sql.*;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -15,6 +17,9 @@ import javax.swing.table.DefaultTableModel;
 public class Register extends javax.swing.JFrame {
 
     Connect conn;
+    PreparedStatement st;
+    ResultSet rs;
+    final JDialog dialog = new JDialog();
     
     /**
      * Creates new form test
@@ -91,7 +96,8 @@ public class Register extends javax.swing.JFrame {
                     address.trim().equals("") || city.trim().equals("") ||
                     phone.trim().equals("") ||
                     (!b_female.isSelected() && !b_male.isSelected() && !b_other.isSelected())) {
-            JOptionPane.showMessageDialog(null, "Please Fill All Fields");
+            dialog.setAlwaysOnTop(true); 
+            JOptionPane.showMessageDialog(dialog, "Please Fill All Fields");
             return false;
         }
         
@@ -99,8 +105,6 @@ public class Register extends javax.swing.JFrame {
     } 
     
     private boolean checkEmail(String email) {
-        PreparedStatement st;
-        ResultSet rs;
         boolean email_exits = false;
         
         String sql = "SELECT user_email FROM `users` WHERE user_email = ?";
@@ -119,6 +123,38 @@ public class Register extends javax.swing.JFrame {
         }
         
         return email_exits;
+    }
+    
+    private boolean checkCardNumber(String card_number) {
+        boolean card_exits = false;
+        
+        String sql = "SELECT user_card_number FROM `users` WHERE user_card_number = ?";
+        
+        try {
+            st = conn.getConnection().prepareStatement(sql);
+            st.setString(1, card_number);
+            rs = st.executeQuery();
+            
+            if (rs.next()) {
+                card_exits = true;
+            } 
+        } catch(SQLException e) {
+            Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, e);
+        }
+        
+        return card_exits;
+    }
+    
+    private String generateRandomCardNumber() {
+        final long MAX_NUMBER = 9999999999999999L;
+        final long MIN_NUMBER = 1000000000000000L;
+        Long actual = Long.valueOf(Math.abs(Float.valueOf(new Random().nextFloat() * (MAX_NUMBER - MIN_NUMBER)).longValue()));
+        String card_number = String.valueOf(actual);
+        while (checkCardNumber(card_number)) {
+            actual = Long.valueOf(Math.abs(Float.valueOf(new Random().nextFloat() * (MAX_NUMBER - MIN_NUMBER)).longValue()));
+            card_number = String.valueOf(actual);
+        }
+        return card_number;
     }
 
     /**
@@ -384,7 +420,7 @@ public class Register extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        this.setVisible(false);
+        this.dispose();
         new Login().setVisible(true);
     }//GEN-LAST:event_jButton6ActionPerformed
 
@@ -403,10 +439,10 @@ public class Register extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         conn = new Connect();
         Connection cn = conn.getConnection();
-        String name, lastname, email, phone, address, city, password;
+        String name, lastname, email, phone, address, city, password, card_number;
         String sql = "INSERT INTO users (user_name, user_lastname, user_gender, "
-                    + "user_email, user_phone, user_address, user_city, user_pin_code) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                    + "user_email, user_phone, user_address, user_city, user_pin_code, user_card_number) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         name = t_name.getText();
         lastname = t_lastname.getText();
         email = t_email.getText();
@@ -414,6 +450,7 @@ public class Register extends javax.swing.JFrame {
         city = t_city.getText();
         phone = t_phone.getText();
         password = String.valueOf(t_pin_code.getPassword());
+        card_number = generateRandomCardNumber();
         
         String gender = "Other";
         if (b_female.isSelected()) {
@@ -434,9 +471,12 @@ public class Register extends javax.swing.JFrame {
                     pstmnt.setString(6, address);
                     pstmnt.setString(7, city);
                     pstmnt.setString(8, password);
+                    pstmnt.setString(9, card_number);
+                    dialog.setAlwaysOnTop(true); 
+                    JOptionPane.showMessageDialog(dialog, "Card Number: " + card_number);
                     int n = pstmnt.executeUpdate();
                     if (n > 0) {
-                        JOptionPane.showMessageDialog(null, "Data Saved");
+                        JOptionPane.showMessageDialog(dialog, "Data Saved");
                         block();
                     }
                 } catch (SQLException ex) {

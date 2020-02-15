@@ -7,6 +7,7 @@ package interfaces;
 
 import java.awt.Color;
 import javax.swing.BorderFactory;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -16,14 +17,20 @@ import javax.swing.JTextField;
  * @author jessi
  */
 public class Login extends javax.swing.JFrame {
-
+    
+    final JDialog dialog = new JDialog();
     /**
      * Creates new form Login
      */
     public Login() {
         initComponents();
         this.setLocationRelativeTo(null);
-
+        clean();
+    }
+    
+    private void clean() {
+        log_card_number.setText("");
+        log_pin_code.setText("");
     }
     
     private boolean validateFieldsFilled() {
@@ -31,11 +38,13 @@ public class Login extends javax.swing.JFrame {
         String pin_code = String.valueOf(log_pin_code.getPassword());
         
         if (card_number.trim().equals("") || pin_code.trim().equals("")) {
-            JOptionPane.showMessageDialog(null, "Please Fill All Fields");
+            dialog.setAlwaysOnTop(true);    
+            JOptionPane.showMessageDialog(dialog, "Please Fill All Fields");
             return false;
         } 
         return true;
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -159,13 +168,11 @@ public class Login extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // All field filled?
-        boolean validate = validateFieldsFilled();
-        System.out.println(validate);
+        if (validateFieldsFilled()) {
             // User information in system?
-        
+            String card_number = log_card_number.getText();
             // Password match user?
-        
-
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void log_card_numberFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_log_card_numberFocusGained
@@ -177,7 +184,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_log_card_numberFocusLost
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        this.setVisible(false);
+        this.dispose();
         new Register().setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
