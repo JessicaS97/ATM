@@ -26,7 +26,8 @@ public class Menu extends javax.swing.JFrame {
     ResultSet rs;
     Login login = new Login();
     
-    String name, last_name, pin_code, user_card_number;
+    String name, last_name, user_card_number;
+    int id, balance, pin_code;
     /**
      * Creates new form Menu
      * @param user_card_number
@@ -44,15 +45,36 @@ public class Menu extends javax.swing.JFrame {
             st.setString(1, user_card_number);
             rs = st.executeQuery();
             while (rs.next()) {
+                id = Integer.parseInt(rs.getString("user_id"));
                 name = rs.getString("user_name");
                 last_name = rs.getString("user_lastname");
-                pin_code = rs.getString("user_pin_code");
+                pin_code = Integer.parseInt(rs.getString("user_pin_code"));
             }
             
             dialog.setAlwaysOnTop(true);    
             JOptionPane.showMessageDialog(dialog, "Hi, " + name + " " + last_name);
         } catch(SQLException e) {
             Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+    
+    private void getBalance(String card_number) {
+        try {
+            String sql = "SELECT * FROM accounts A, mappings B, users C "
+                        + "WHERE A.account_id = B.account_id "
+                        + "AND B.user_id = C.user_id "
+                        + "AND C.user_id = ?";
+            st = conn.getConnection().prepareStatement(sql);
+            st.setInt(1, id);
+            rs = st.executeQuery();
+            
+            if (rs.next()) {
+                balance = rs.getInt("balance");
+                dialog.setAlwaysOnTop(true);    
+                JOptionPane.showMessageDialog(dialog, "Account balance: " + balance);
+            } 
+        } catch(SQLException e) {
+            System.err.print("There was an error" + e);
         }
     }
 
@@ -90,6 +112,11 @@ public class Menu extends javax.swing.JFrame {
         b_deposit.setText("DEPOSIT");
 
         b_balance.setText("VIEW BALANCE");
+        b_balance.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_balanceActionPerformed(evt);
+            }
+        });
 
         b_withdraw.setText("WITHDRAW");
 
@@ -163,6 +190,10 @@ public class Menu extends javax.swing.JFrame {
     private void b_change_pinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_change_pinActionPerformed
         
     }//GEN-LAST:event_b_change_pinActionPerformed
+
+    private void b_balanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_balanceActionPerformed
+        getBalance(user_card_number);
+    }//GEN-LAST:event_b_balanceActionPerformed
 
     /**
      * @param args the command line arguments
