@@ -9,6 +9,9 @@ import atm.simulator.system.classes.Connect;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 /**
@@ -17,21 +20,25 @@ import javax.swing.JOptionPane;
  */
 public class Withdraw extends javax.swing.JFrame {
     
-    String user_card_number;
-    int balance;
-    Connect conn;
+    final JDialog dialog = new JDialog();
+    int balance, id;
+    Connect conn = new Connect();
     PreparedStatement st;
     ResultSet rs;
 
     /**
      * Creates new form Withdraw
+     * @param card_number
      */
-    public Withdraw(String card_number) {
+    public Withdraw(int user_id) {
         initComponents();
-        user_card_number = card_number;
+        this.setLocationRelativeTo(null);
+        dialog.setAlwaysOnTop(true);   
+        id = user_id;
     }
     
-    private void getBalance(String card_number) {
+    private int getBalance(int id) {
+        int balance = -1000;
         try {
             String sql = "SELECT * FROM accounts A, mappings B, users C "
                         + "WHERE A.account_id = B.account_id "
@@ -43,12 +50,11 @@ public class Withdraw extends javax.swing.JFrame {
             
             if (rs.next()) {
                 balance = rs.getInt("balance");
-                dialog.setAlwaysOnTop(true);    
-                JOptionPane.showMessageDialog(dialog, "Account balance: " + balance);
             } 
         } catch(SQLException e) {
             System.err.print("There was an error" + e);
         }
+        return balance;
     }
 
     /**
@@ -63,6 +69,8 @@ public class Withdraw extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         t_withdraw = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -76,20 +84,41 @@ public class Withdraw extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("WITHDRAW");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("CANCEL");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(54, 54, 54)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(82, 82, 82)
-                        .addComponent(t_withdraw, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(54, 54, 54)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(82, 82, 82)
+                                .addComponent(t_withdraw, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(113, 113, 113)
+                                .addComponent(jLabel1))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(113, 113, 113)
-                        .addComponent(jLabel1)))
+                        .addGap(93, 93, 93)
+                        .addComponent(jButton1)
+                        .addGap(41, 41, 41)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(80, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -101,15 +130,52 @@ public class Withdraw extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(t_withdraw, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(111, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addGap(31, 31, 31))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void t_withdrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_withdrawActionPerformed
-        int withdraw_money = Integer.parseInt(t_withdraw.getText());
+        
     }//GEN-LAST:event_t_withdrawActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (t_withdraw.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(dialog, "Please Enter Amount to Withdraw");
+        } else {
+            int withdraw_money = Integer.parseInt(t_withdraw.getText());
+            int balance = getBalance(id);
+            if (balance - withdraw_money > -10) {
+                balance -= withdraw_money;
+            }
+            // Update balance
+                String sql = "UPDATE accounts A, mappings B, users C "
+                            + "SET balance = ? "
+                            + "WHERE A.account_id = B.account_id "
+                            + "AND B.user_id = C.user_id "
+                            + "AND C.user_id = ?;";
+                try {
+                    st = conn.getConnection().prepareStatement(sql);
+                    st.setInt(1, balance);
+                    st.setInt(2, id);
+                    st.executeUpdate();
+                    dialog.setAlwaysOnTop(true);    
+                    JOptionPane.showMessageDialog(dialog, "Successful Withdrawal");
+                    this.dispose();
+                } catch (SQLException e) {
+                    Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, e);
+                }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -147,6 +213,8 @@ public class Withdraw extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField t_withdraw;

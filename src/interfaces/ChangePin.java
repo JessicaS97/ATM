@@ -35,6 +35,7 @@ public class ChangePin extends javax.swing.JFrame {
     public ChangePin(String card_number, int password) {
         initComponents();
         this.setLocationRelativeTo(null);
+        dialog.setAlwaysOnTop(true);    
         user_pin_code = password;
         user_card_number = card_number;
         JOptionPane.showMessageDialog(dialog, " " + password + " " + user_pin_code);
@@ -47,7 +48,6 @@ public class ChangePin extends javax.swing.JFrame {
         
         if (existing_pin_code.trim().equals("") || new_pin_code.trim().equals("") ||
                     confirm_pin_code.trim().equals("")) {
-            dialog.setAlwaysOnTop(true);    
             JOptionPane.showMessageDialog(dialog, "Please Complete All Fields");
             return false;
         }
@@ -58,7 +58,6 @@ public class ChangePin extends javax.swing.JFrame {
         if (user_pin_code == Integer.parseInt(existing_pin_code)) {
             return true;
         }
-        dialog.setAlwaysOnTop(true);    
         JOptionPane.showMessageDialog(dialog, "Incorrect Pin Code");
         return false;
     }
@@ -69,7 +68,6 @@ public class ChangePin extends javax.swing.JFrame {
         if (new_pin_code.trim().equals(confirm_pin_code)) {
             return true;
         }
-        dialog.setAlwaysOnTop(true);    
         JOptionPane.showMessageDialog(dialog, "New Pin Code do not match");
         return false;
     }
@@ -195,7 +193,6 @@ public class ChangePin extends javax.swing.JFrame {
                     st.setInt(1, Integer.parseInt(new_pin_code));
                     st.setString(2, user_card_number);
                     st.executeUpdate();
-                    dialog.setAlwaysOnTop(true);    
                     JOptionPane.showMessageDialog(dialog, "Successful Pin Code Update");
                     this.dispose();
                 } catch (SQLException e) {

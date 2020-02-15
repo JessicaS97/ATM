@@ -111,6 +111,11 @@ public class Menu extends javax.swing.JFrame {
         jLabel1.setText("SELLECT A TRANSACTION");
 
         b_deposit.setText("DEPOSIT");
+        b_deposit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_depositActionPerformed(evt);
+            }
+        });
 
         b_balance.setText("VIEW BALANCE");
         b_balance.addActionListener(new java.awt.event.ActionListener() {
@@ -202,8 +207,12 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_b_balanceActionPerformed
 
     private void b_withdrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_withdrawActionPerformed
-        new Withdraw(card_number).setVisible(true);
+        new Withdraw(id).setVisible(true);
     }//GEN-LAST:event_b_withdrawActionPerformed
+
+    private void b_depositActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_depositActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_b_depositActionPerformed
 
     /**
      * @param args the command line arguments
