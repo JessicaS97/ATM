@@ -5,18 +5,75 @@
  */
 package interfaces;
 
+import atm.simulator.system.classes.Connect;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author jessi
  */
 public class ChangePin extends javax.swing.JFrame {
 
+    final JDialog dialog = new JDialog();
+    Connect cn = new Connect();
+    PreparedStatement st;
+    ResultSet rs;
+    int user_pin_code;
+    String existing_pin_code;
+    String new_pin_code;
+    String confirm_pin_code;
+    String user_card_number;
     /**
      * Creates new form ChangePin
      */
-    public ChangePin() {
+    public ChangePin(String card_number, int password) {
         initComponents();
+        this.setLocationRelativeTo(null);
+        user_pin_code = password;
+        user_card_number = card_number;
+        JOptionPane.showMessageDialog(dialog, " " + password + " " + user_pin_code);
     }
+    
+    private boolean checkFieldsFilled() {
+        existing_pin_code = String.valueOf(t_pin_code.getPassword());
+        new_pin_code = String.valueOf(t_new_pin_code.getPassword());
+        confirm_pin_code = String.valueOf(t_confirm_pin_code.getPassword());
+        
+        if (existing_pin_code.trim().equals("") || new_pin_code.trim().equals("") ||
+                    confirm_pin_code.trim().equals("")) {
+            dialog.setAlwaysOnTop(true);    
+            JOptionPane.showMessageDialog(dialog, "Please Complete All Fields");
+            return false;
+        }
+        return true;
+    }
+    
+    private boolean checkExistingPinCode() {
+        if (user_pin_code == Integer.parseInt(existing_pin_code)) {
+            return true;
+        }
+        dialog.setAlwaysOnTop(true);    
+        JOptionPane.showMessageDialog(dialog, "Incorrect Pin Code");
+        return false;
+    }
+    
+    private boolean validateNewPinCode() {
+        new_pin_code = String.valueOf(t_new_pin_code.getPassword());
+        confirm_pin_code = String.valueOf(t_confirm_pin_code.getPassword());
+        if (new_pin_code.trim().equals(confirm_pin_code)) {
+            return true;
+        }
+        dialog.setAlwaysOnTop(true);    
+        JOptionPane.showMessageDialog(dialog, "New Pin Code do not match");
+        return false;
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -30,10 +87,12 @@ public class ChangePin extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        t_existing_pin_code = new javax.swing.JTextField();
-        t_new_pin_code_1 = new javax.swing.JTextField();
-        t_new_pin_code_2 = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        t_pin_code = new javax.swing.JPasswordField();
+        t_confirm_pin_code = new javax.swing.JPasswordField();
+        t_new_pin_code = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -43,44 +102,60 @@ public class ChangePin extends javax.swing.JFrame {
 
         jLabel3.setText("Re-enter New Pin Code");
 
-        t_existing_pin_code.setText("jTextField1");
-        t_existing_pin_code.addActionListener(new java.awt.event.ActionListener() {
+        jLabel4.setText("Change Your Pin Code");
+
+        jButton1.setText("CHANGE");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                t_existing_pin_codeActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
 
-        t_new_pin_code_1.setText("jTextField2");
+        jButton2.setText("CANCEL");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
-        t_new_pin_code_2.setText("jTextField3");
-
-        jLabel4.setText("Change Your Pin Code");
+        t_pin_code.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                t_pin_codeActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(t_new_pin_code_2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(t_new_pin_code_1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(91, 91, 91)
-                                .addComponent(t_existing_pin_code, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(0, 157, Short.MAX_VALUE)
+                                .addComponent(jButton1)
+                                .addGap(30, 30, 30)))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel3)
+                            .addGap(34, 34, 34)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(151, 151, 151)
-                        .addComponent(jLabel4)))
-                .addContainerGap(133, Short.MAX_VALUE))
+                        .addComponent(jLabel1)
+                        .addGap(91, 91, 91)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton2)
+                    .addComponent(t_pin_code)
+                    .addComponent(t_new_pin_code)
+                    .addComponent(t_confirm_pin_code, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(151, 151, 151)
+                .addComponent(jLabel4)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -90,24 +165,53 @@ public class ChangePin extends javax.swing.JFrame {
                 .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(t_existing_pin_code, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(t_pin_code, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(t_new_pin_code_1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(41, 41, 41)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(t_new_pin_code, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(t_new_pin_code_2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(50, Short.MAX_VALUE))
+                    .addComponent(t_confirm_pin_code, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void t_existing_pin_codeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_existing_pin_codeActionPerformed
-        
-    }//GEN-LAST:event_t_existing_pin_codeActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (checkFieldsFilled()) {
+            // Validate existing pin code and Validate new pin code
+            if (checkExistingPinCode() && validateNewPinCode()) {
+                // Update pin code
+                String sql = "UPDATE users SET user_pin_code = ? WHERE users.user_card_number = ?;";
+                try {
+                    st = cn.getConnection().prepareStatement(sql);
+                    st.setInt(1, Integer.parseInt(new_pin_code));
+                    st.setString(2, user_card_number);
+                    st.executeUpdate();
+                    dialog.setAlwaysOnTop(true);    
+                    JOptionPane.showMessageDialog(dialog, "Successful Pin Code Update");
+                    this.dispose();
+                } catch (SQLException e) {
+                    Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, e);
+                }
+            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void t_pin_codeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_pin_codeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_t_pin_codeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -145,12 +249,14 @@ public class ChangePin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JTextField t_existing_pin_code;
-    private javax.swing.JTextField t_new_pin_code_1;
-    private javax.swing.JTextField t_new_pin_code_2;
+    private javax.swing.JPasswordField t_confirm_pin_code;
+    private javax.swing.JPasswordField t_new_pin_code;
+    private javax.swing.JPasswordField t_pin_code;
     // End of variables declaration//GEN-END:variables
 }
