@@ -41,6 +41,8 @@ Challenge: writing the correct query syntax to retrieve balance information with
 <img src="img/pic12.png" height="300" width="340"> <img src="img/pic13.png" height="380" width="360"> 
 <img src="img/pic14.png" height="300" width="360">
 
+All functionalities which I wanted my ATM to include have been completed, with error checkings and successful retrieval and update of the DB.
+
 ## Built with:
 * Java 
 * JDBC API
