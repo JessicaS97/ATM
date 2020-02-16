@@ -6,6 +6,7 @@ This project simulates the common transactions and functionalities of an ATM. A 
 ## Site is Live At:
 
 **Project Start Date:** 13/02/2020
+**Project Fnish Date:** 16/02/2020
 
 **What This Project Is For Me**
 1) Java Practice: the first time I used Java was on my first year at university. After, I had exposure to various other programming skills and their applications. Hence, I wanted to brush up my Java skills by bulding this Java based Bank Management System Simulator.
