@@ -201,7 +201,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_b_change_pinActionPerformed
 
     private void b_balanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_balanceActionPerformed
-        getBalance(card_number);
+        getBalance(id);
     }//GEN-LAST:event_b_balanceActionPerformed
 
     private void b_withdrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_withdrawActionPerformed

@@ -9,6 +9,8 @@ import atm.simulator.system.classes.Connect;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
@@ -19,8 +21,8 @@ import javax.swing.JOptionPane;
 public class Transfer extends javax.swing.JFrame {
 
     final JDialog dialog = new JDialog();
-    int balance, id, account_number, bsb, amount;
-    String account_name;
+    int balance, id, amount;
+    String account_name, account_number, bsb;
     Connect conn = new Connect();
     PreparedStatement st;
     ResultSet rs;
@@ -62,6 +64,66 @@ public class Transfer extends javax.swing.JFrame {
             System.err.print("There was an error" + e);
         }
         return balance;
+    }
+    
+    private int getDepositId(String account_number) {
+        int id = -1;
+        try {
+            String sql = "SELECT * FROM users A, mappings B, accounts C "
+                        + "WHERE A.user_id = B.user_id "
+                        + "AND B.account_id = C.account_id "
+                        + "AND C.account_no = ?";
+            st = conn.getConnection().prepareStatement(sql);
+            st.setString(1, account_number);
+            rs = st.executeQuery();
+            
+            if (rs.next()) {
+                id = rs.getInt("user_id");
+            } 
+        } catch(SQLException e) {
+            System.err.print("There was an error" + e);
+        }
+        return id;
+    }
+    
+    private void depositMoney(String account_number, String bsb, int amount) {
+        int deposit_balance;
+        int depositId = getDepositId(account_number);
+        try {
+            String sql = "SELECT * FROM accounts A, mappings B, users C "
+                        + "WHERE A.account_id = B.account_id "
+                        + "AND B.user_id = C.user_id "
+                        + "AND C.user_id = ?";
+            st = conn.getConnection().prepareStatement(sql);
+            st.setInt(1, depositId);
+            rs = st.executeQuery();
+            
+            if (rs.next()) {
+                deposit_balance = rs.getInt("balance");
+                deposit_balance += amount;
+                updateBalance(depositId, deposit_balance);
+            } 
+        } catch(SQLException e) {
+            System.err.print("There was an error" + e);
+        }
+    }
+    
+    private void updateBalance(int id, int amount) {
+            
+        // Update balance
+        String sql = "UPDATE accounts A, mappings B, users C "
+                    + "SET balance = ? "
+                    + "WHERE A.account_id = B.account_id "
+                    + "AND B.user_id = C.user_id "
+                    + "AND C.user_id = ?";
+        try {
+            st = conn.getConnection().prepareStatement(sql);
+            st.setInt(1, amount);
+            st.setInt(2, id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
 
     /**
@@ -212,15 +274,20 @@ public class Transfer extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if (checkFieldsFilled()) {
             balance = getBalance(id);
-            account_number = Integer.parseInt(t_account_number.getText());
+            account_number = t_account_number.getText();
             account_name = t_account_name.getText();
-            bsb = Integer.parseInt(t_bsb.getText());
+            bsb = t_bsb.getText();
             amount = Integer.parseInt(t_amount.getText());
             
             if (amount > balance) {
                 JOptionPane.showMessageDialog(dialog, "Insufficient Funds");
             } else {
-                
+                // Update balance
+                balance -= amount;
+                updateBalance(id, balance);
+                // Deposit money
+                depositMoney(account_number, bsb, amount);
+                JOptionPane.showMessageDialog(dialog, "Successful Deposit");
             }
             this.dispose();
         }        
