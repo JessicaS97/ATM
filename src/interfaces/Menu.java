@@ -211,7 +211,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_b_withdrawActionPerformed
 
     private void b_depositActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_depositActionPerformed
-        // TODO add your handling code here:
+        new Deposit(id).setVisible(true);
     }//GEN-LAST:event_b_depositActionPerformed
 
     /**
