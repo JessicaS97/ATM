@@ -83,7 +83,7 @@
   <SubComponents>
     <Component class="javax.swing.JButton" name="b_transfer">
       <Properties>
-        <Property name="text" type="java.lang.String" value="TRANSFER"/>
+        <Property name="text" type="java.lang.String" value="PAY"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="b_transferActionPerformed"/>

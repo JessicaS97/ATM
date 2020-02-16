@@ -27,6 +27,7 @@ public class Register extends javax.swing.JFrame {
     public Register() {
         initComponents();
         this.setLocationRelativeTo(null);
+        dialog.setAlwaysOnTop(true); 
         groupButton();
         clean();
         block();
@@ -96,7 +97,6 @@ public class Register extends javax.swing.JFrame {
                     address.trim().equals("") || city.trim().equals("") ||
                     phone.trim().equals("") ||
                     (!b_female.isSelected() && !b_male.isSelected() && !b_other.isSelected())) {
-            dialog.setAlwaysOnTop(true); 
             JOptionPane.showMessageDialog(dialog, "Please Fill All Fields");
             return false;
         }
@@ -155,6 +155,30 @@ public class Register extends javax.swing.JFrame {
             card_number = String.valueOf(actual);
         }
         return card_number;
+    }
+    
+    private String generateAccountNumber() {
+        final long MAX_NUMBER = 999999999L;
+        final long MIN_NUMBER = 100000000L;
+        Long actual = Long.valueOf(Math.abs(Float.valueOf(new Random().nextFloat() * (MAX_NUMBER - MIN_NUMBER)).longValue()));
+        String account_number = String.valueOf(actual);
+        while (checkCardNumber(account_number)) {
+            actual = Long.valueOf(Math.abs(Float.valueOf(new Random().nextFloat() * (MAX_NUMBER - MIN_NUMBER)).longValue()));
+            account_number = String.valueOf(actual);
+        }
+        return account_number;
+    }
+    
+    private String generateBSB() {
+        final long MAX_NUMBER = 99999L;
+        final long MIN_NUMBER = 10000L;
+        Long actual = Long.valueOf(Math.abs(Float.valueOf(new Random().nextFloat() * (MAX_NUMBER - MIN_NUMBER)).longValue()));
+        String BSB = String.valueOf(actual);
+        while (checkCardNumber(BSB)) {
+            actual = Long.valueOf(Math.abs(Float.valueOf(new Random().nextFloat() * (MAX_NUMBER - MIN_NUMBER)).longValue()));
+            BSB = String.valueOf(actual);
+        }
+        return BSB;
     }
 
     /**
@@ -444,7 +468,7 @@ public class Register extends javax.swing.JFrame {
         String user_sql = "INSERT INTO users (user_name, user_lastname, user_gender, "
                     + "user_email, user_phone, user_address, user_city, user_pin_code, user_card_number) "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        String account_sql = "INSERT INTO accounts (balance) VALUES (?)";
+        String account_sql = "INSERT INTO accounts (balance, account_no, bsb) VALUES (?, ? ,?)";
         name = t_name.getText();
         lastname = t_lastname.getText();
         email = t_email.getText();
@@ -483,7 +507,11 @@ public class Register extends javax.swing.JFrame {
                     }
                     
                     PreparedStatement account_st = cn.prepareStatement(account_sql, Statement.RETURN_GENERATED_KEYS);
+                    int bsb = Integer.parseInt(generateBSB());
+                    int account_number = Integer.parseInt(generateAccountNumber());
                     account_st.setInt(1, 0);
+                    account_st.setInt(2, account_number);
+                    account_st.setInt(3, bsb);
                     account_st.executeUpdate();
                     ResultSet addAccount = account_st.getGeneratedKeys();
                     if (addAccount.next()) {
@@ -498,7 +526,8 @@ public class Register extends javax.swing.JFrame {
                         link_st.setInt(2, account_id);
                         link_st.executeUpdate();
                         JOptionPane.showMessageDialog(dialog, "Data Saved");
-                        JOptionPane.showMessageDialog(dialog, "Card Number: " + card_number);
+                        JOptionPane.showMessageDialog(dialog, "Card Number: " + card_number + 
+                                    "\nAccount Number: " + account_number + "\nBSB: " + bsb);
                         block();
                     }
                     

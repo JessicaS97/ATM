@@ -101,7 +101,7 @@ public class Menu extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        b_transfer.setText("TRANSFER");
+        b_transfer.setText("PAY");
         b_transfer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 b_transferActionPerformed(evt);
@@ -191,7 +191,7 @@ public class Menu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void b_transferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_transferActionPerformed
-        // TODO add your handling code here:
+        new Transfer(id).setVisible(true);
     }//GEN-LAST:event_b_transferActionPerformed
 
     private void b_exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_exitActionPerformed
