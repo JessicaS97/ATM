@@ -35,6 +35,7 @@ public class Menu extends javax.swing.JFrame {
     public Menu(String user_card_number) {
         initComponents();
         this.setLocationRelativeTo(null);
+        dialog.setAlwaysOnTop(true); 
         setDetails(user_card_number);
     }
     
@@ -51,15 +52,13 @@ public class Menu extends javax.swing.JFrame {
                 pin_code = Integer.parseInt(rs.getString("user_pin_code"));
                 card_number = rs.getString("user_card_number");
             }
-            
-            dialog.setAlwaysOnTop(true);    
             JOptionPane.showMessageDialog(dialog, "Hi, " + name + " " + last_name);
         } catch(SQLException e) {
             Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, e);
         }
     }
     
-    private void getBalance(String card_number) {
+    private void getBalance(int id) {
         try {
             String sql = "SELECT * FROM accounts A, mappings B, users C "
                         + "WHERE A.account_id = B.account_id "
@@ -70,8 +69,7 @@ public class Menu extends javax.swing.JFrame {
             rs = st.executeQuery();
             
             if (rs.next()) {
-                balance = rs.getInt("balance");
-                dialog.setAlwaysOnTop(true);    
+                balance = rs.getInt("balance");   
                 JOptionPane.showMessageDialog(dialog, "Account balance: " + balance);
             } 
         } catch(SQLException e) {

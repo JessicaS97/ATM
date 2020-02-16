@@ -210,7 +210,7 @@ public class Withdraw extends javax.swing.JFrame {
         /* Create and display the form 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Withdraw().setVisible(true);
+                new Withdraw(int id).setVisible(true);
             }
         }); */
     }
