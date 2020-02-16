@@ -154,7 +154,7 @@ public class Withdraw extends javax.swing.JFrame {
         } else {
             int withdraw_money = Integer.parseInt(t_withdraw.getText());
             int balance = getBalance(id);
-            if (balance - withdraw_money > -10) {
+            if (withdraw_money >= balance) {
                 balance -= withdraw_money;
                 
                 // Update balance

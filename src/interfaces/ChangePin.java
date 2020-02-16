@@ -38,7 +38,6 @@ public class ChangePin extends javax.swing.JFrame {
         dialog.setAlwaysOnTop(true);    
         user_pin_code = password;
         user_card_number = card_number;
-        JOptionPane.showMessageDialog(dialog, " " + password + " " + user_pin_code);
     }
     
     private boolean checkFieldsFilled() {
