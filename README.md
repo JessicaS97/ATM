@@ -37,8 +37,8 @@ Work progress: basic transactions will allow users to view account balance, tran
 
 Challenge: writing the correct query syntax to retrieve balance information with passed used id. Had to use relational JOIN query to connect users table to accounts table through the mappings table in DB 
 
-<img src="img/pic12.png" height="380" width="360"> <img src="img/pic13.png" height="380" width="360"> 
-<img src="img/pic14.png" height="380" width="360">
+<img src="img/pic12.png" height="380" width="320"> <img src="img/pic13.png" height="380" width="360"> 
+<img src="img/pic14.png" height="340" width="360">
 
 ## Built with:
 * Java 
